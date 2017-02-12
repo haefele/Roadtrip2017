@@ -55,7 +55,7 @@ private static async Task<string> GetBody(TraceWriter log)
     return $@"Guten Morgen!<br><br>
     
 Heute gibt es ein Bild von <b>{city}!</b><br><br>
-<img src=""{image}"" width=1280>";
+<img src=""{image}"" width=720>";
 }
 
 private static string GetStringSetting(string key)
