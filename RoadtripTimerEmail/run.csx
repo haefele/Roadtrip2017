@@ -40,26 +40,22 @@ private static string GetSubject(TraceWriter log)
 
     log.Info($"Roadtrip is in {months} months and {days} days.");
     
-    return $"Noch {months} Monate und {days} Tage bis zum Roadtrip!";
+    return months > 0 
+        ? $"Noch {months} Monate und {days} Tage bis zum Roadtrip!"
+        : $"Noch {days} Tage bis zum Roadtrip!";
 }
 
 private static async Task<string> GetBody(TraceWriter log)
 {    
-    string paris  = await GetRandomImage("Paris");
-    log.Info($"Image for Paris is: {paris}");
-    string london = await GetRandomImage("London");
-    log.Info($"Image for London is: {london}");
-    string brussel = await GetRandomImage("Brüssel");
-    log.Info($"Image for Brussel is: {brussel}");
+    string city = GetRandomCity();
+    string image  = await GetRandomImage(city);
+    
+    log.Info($"Image for {city} is: {image}");
 
-    return $@"<h2>Paris</h2>
-<img src=""{paris}"" width=1280><br/>
-
-<h2>London</h2>
-<img src=""{london}"" width=1280><br/>
-
-<h2>Brüssel</h2>
-<img src=""{brussel}"" width=1280>";
+    return $@"Guten Morgen!<br><br>
+    
+Heute gibt es ein Bild von <b>{city}!</b><br><br>
+<img src=""{image}"" width=1280>";
 }
 
 private static string GetStringSetting(string key)
@@ -70,6 +66,14 @@ private static string GetStringSetting(string key)
 private static int GetIntSetting(string key)
 {
     return int.Parse(ConfigurationManager.AppSettings[key]);
+}
+
+private static string GetRandomCity()
+{
+    var cities = GetStringSetting("Cities").Split(';');
+    var random = new Random();
+    var cityIndex = random.Next(0, cities.Length);
+    return cities[cityIndex];
 }
 
 private static async Task<string> GetRandomImage(string city) 
