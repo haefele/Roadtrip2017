@@ -9,6 +9,12 @@ using Newtonsoft.Json.Linq;
 
 public static async Task Run(TimerInfo timer, TraceWriter log)
 {
+    DateTime roadtrip = new DateTime(2017, 5, 30);
+    DateTime today = DateTime.Today;
+    
+    if (today > roadtrip)
+        return;
+    
     var client = new SmtpClient(GetStringSetting("SmtpHost"), GetIntSetting("SmtpPort"));
     client.Credentials = new NetworkCredential(GetStringSetting("SmtpUsername"), GetStringSetting("SmtpPassword"));
     
